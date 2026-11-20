@@ -1,4 +1,6 @@
 #include "led_driver.h"
+#include "bit_utils.h"
+
 
 LedDriver::LedDriver(uint8_t led) {
     set_led(led);
@@ -14,13 +16,14 @@ LedDriver::LedDriver() {
 void LedDriver::led_on() {
     Serial.println("Led ON");
     set_state(true);
-    digitalWrite(get_led(), HIGH);
+    SetBit(PORTB, PB7);  // Allume la LED
+    delay(1000);
 }
 
 void LedDriver::led_off() {
     Serial.println("Led OFF");
     set_state(false);
-    digitalWrite(get_led(), LOW);
+    ClrBit(PORTB, PB7);  // Éteint la LED
 }
 
 void LedDriver::led_toggle(uint32_t TimeSleep) {
@@ -41,8 +44,14 @@ uint8_t LedDriver::get_led() {
 void LedDriver::change_state(bool state)
 {
     bool newState = !state;
+
     set_state(newState);
-    digitalWrite(get_led(), newState ? HIGH : LOW);
+    if(get_state()) {
+        led_on();
+    } else {
+        led_off();
+    }
+    
     Serial.print("Led state changed to: ");
     Serial.println(newState ? "ON" : "OFF");
 }

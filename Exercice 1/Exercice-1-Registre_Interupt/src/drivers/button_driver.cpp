@@ -1,4 +1,5 @@
 #include "button_driver.h"
+#include "bit_utils.h"
 
 ButtonDriver::ButtonDriver(uint8_t button)
 {
@@ -7,7 +8,7 @@ ButtonDriver::ButtonDriver(uint8_t button)
 
 uint16_t ButtonDriver::GetCurrentValue()
 {
-    value = digitalRead(button);
+    value = !TestBit(PINE, PE4);
     set_value(value);
     return value;
 }
@@ -21,7 +22,6 @@ void ButtonDriver::set_value(uint16_t newValue)
 
 
 // GETTER
-
 void ButtonDriver::set_button(uint8_t newButton)
 {
     this->button = newButton;
