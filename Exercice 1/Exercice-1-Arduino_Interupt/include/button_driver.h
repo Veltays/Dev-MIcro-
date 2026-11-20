@@ -3,22 +3,26 @@
 
 #include <Arduino.h>
 
-
-class ButtonDriver {
-public:
+class ButtonDriver
+{
+private:
     uint8_t button;
     uint16_t value;
 
-    ButtonDriver(uint8_t bouton);
+public:
+    ButtonDriver(uint8_t button);
+
+    void begin();
+    void setInterrupt(void (*callback)(), int mode);
 
     uint16_t GetCurrentValue();
 
-
-private:
+    // SETTERS
+    void set_value(uint16_t newValue);
     void set_button(uint8_t newButton);
-    uint8_t get_button();
-    void set_value(uint16_t value);
 
+    // GETTERS
+    uint8_t get_button();
 };
 
 #endif
